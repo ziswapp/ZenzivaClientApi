@@ -1,0 +1,41 @@
+{
+    "name": "ziswapp/zenziva-client-api",
+    "description": "Zenziva client api",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "zenziva",
+        "sms"
+    ],
+    "authors": [
+        {
+            "name": "Nuradiyana",
+            "email": "me@nooradiana.com"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "nesbot/carbon": "^2.27",
+        "symfony/http-client": "^4.4|^5.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0",
+        "symplify/easy-coding-standard": "^7.0",
+        "vimeo/psalm": "^3.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ziswapp\\Zenziva\\": "src/Ziswapp/Zenziva/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

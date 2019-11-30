@@ -1,0 +1,26 @@
+{
+    "msg-count": 3,
+    "msg": [
+        {
+            "messageId": "424",
+            "date": "2017-11-03 09:04:59",
+            "noTujuan": "+628123456789",
+            "isiPesan": "Hi John",
+            "msg-status": "Sent"
+        },
+        {
+            "messageId": "423",
+            "date": "2017-11-03 08:48:07",
+            "noTujuan": "+628123456789",
+            "isiPesan": "Hi Doe",
+            "msg-status": "Sent"
+        },
+        {
+            "messageId": "416",
+            "date": "2017-11-03 07:34:07",
+            "noTujuan": "+628123456789",
+            "isiPesan": "Hi John Doe",
+            "msg-status": "Sent"
+        }
+    ]
+}
