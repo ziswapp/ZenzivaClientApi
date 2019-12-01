@@ -17,15 +17,15 @@ final class Credit implements ResponseFactoryInterface
     private $balance;
 
     /**
-     * @var DateTimeInterface
+     * @var DateTimeInterface|null
      */
     private $expired;
 
     /**
-     * @param int               $balance
-     * @param DateTimeInterface $expired
+     * @param int                    $balance
+     * @param DateTimeInterface|null $expired
      */
-    public function __construct(int $balance, DateTimeInterface $expired)
+    public function __construct(int $balance, ?DateTimeInterface $expired = null)
     {
         $this->balance = $balance;
 
@@ -39,14 +39,18 @@ final class Credit implements ResponseFactoryInterface
      */
     public static function buildFromArrayContent(array $content): ResponseFactoryInterface
     {
-        $balance = (int) $content['credit'];
+        $balance = \array_key_exists('credit', $content) ? (int) $content['credit'] : (int) $content['Credit'];
 
-        $expiredString = $content['expired'];
+        if (\array_key_exists('expired', $content)) {
+            $expiredString = $content['expired'];
 
-        /** @var DateTimeInterface $expiredDate */
-        $expiredDate = Carbon::createFromLocaleFormat('d F Y', 'id_ID', $expiredString, 'Asia/Jakarta');
+            /** @var DateTimeInterface $expiredDate */
+            $expiredDate = Carbon::createFromLocaleFormat('d F Y', 'id_ID', $expiredString, 'Asia/Jakarta');
 
-        return new static($balance, $expiredDate);
+            return new static($balance, $expiredDate);
+        }
+
+        return new static($balance);
     }
 
     /**
@@ -58,9 +62,9 @@ final class Credit implements ResponseFactoryInterface
     }
 
     /**
-     * @return DateTimeInterface
+     * @return DateTimeInterface|null
      */
-    public function getExpired(): DateTimeInterface
+    public function getExpired(): ?DateTimeInterface
     {
         return $this->expired;
     }

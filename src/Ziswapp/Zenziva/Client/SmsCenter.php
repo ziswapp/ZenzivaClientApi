@@ -6,45 +6,20 @@ namespace Ziswapp\Zenziva\Client;
 
 use Carbon\Carbon;
 use DateTimeInterface;
-use Ziswapp\Zenziva\Credential;
 use Ziswapp\Zenziva\Response\Inbox;
 use Ziswapp\Zenziva\Response\Credit;
 use Ziswapp\Zenziva\Response\Outbox;
-use Symfony\Contracts\HttpClient\ResponseInterface;
 use Ziswapp\Zenziva\Exception\CreditLimitException;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Ziswapp\Zenziva\Exception\CreditExpiredException;
 use Ziswapp\Zenziva\Exception\ZenzivaRequestException;
-use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 
-final class SmsCenter implements SmsCenterClientInterface
+final class SmsCenter extends Client implements SmsCenterClientInterface
 {
-    /**
-     * @var HttpClientInterface
-     */
-    private $httpClient;
-
-    /**
-     * @var Credential
-     */
-    private $credential;
-
-    /**
-     * @param Credential          $credential
-     * @param HttpClientInterface $httpClient
-     */
-    public function __construct(Credential $credential, HttpClientInterface $httpClient)
-    {
-        $this->httpClient = $httpClient;
-
-        $this->credential = $credential;
-    }
-
     /**
      * @param string $to
      * @param string $message
@@ -132,7 +107,7 @@ final class SmsCenter implements SmsCenterClientInterface
             throw new CreditLimitException();
         }
 
-        if ($credit->getExpired() < Carbon::now('Asia/Jakarta')) {
+        if ($credit->getExpired() !== null && $credit->getExpired() < Carbon::now('Asia/Jakarta')) {
             throw new CreditExpiredException();
         }
 
@@ -221,27 +196,5 @@ final class SmsCenter implements SmsCenterClientInterface
             $this->credential->getKey(),
             $this->credential->getSecret()
         );
-    }
-
-    /**
-     * @param ResponseInterface $response
-     *
-     * @return array
-     * @throws ClientExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
-     * @throws ZenzivaRequestException
-     */
-    private function parseResponse(ResponseInterface $response): array
-    {
-        try {
-            return $response->toArray();
-        } catch (ClientException $exception) {
-            $content = $exception->getResponse()->toArray(false);
-
-            throw new ZenzivaRequestException($content['text']);
-        }
     }
 }

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Tests;
+namespace Tests\Client;
 
 use DateTime;
 use Carbon\Carbon;
@@ -19,7 +19,7 @@ use Symfony\Component\HttpClient\Response\MockResponse;
 /**
  * @author Nuradiyana <me@nooradiana.com>
  */
-final class ClientTest extends TestCase
+final class SmsCenterTest extends TestCase
 {
     public function testThrowCredentialException()
     {
@@ -54,7 +54,7 @@ final class ClientTest extends TestCase
         $outbox = $client->send('081234567890', 'Hello John!');
 
         $this->assertInstanceOf(Outbox::class, $outbox);
-        $this->assertSame(157365, $outbox->getId());
+        $this->assertEquals(157365, $outbox->getId());
         $this->assertSame('Hello John!', $outbox->getMessage());
         $this->assertSame('081234567890', $outbox->getTo());
         $this->assertSame(Carbon::now('Asia/Jakarta')->toDateTimeString(), $outbox->getDate()->format(Carbon::DEFAULT_TO_STRING_FORMAT));
@@ -73,7 +73,7 @@ final class ClientTest extends TestCase
 
         $outbox = $client->status('157365');
         $this->assertInstanceOf(Outbox::class, $outbox);
-        $this->assertSame(157365, $outbox->getId());
+        $this->assertEquals(157365, $outbox->getId());
         $this->assertSame('Hello John!', $outbox->getMessage());
         $this->assertSame('081234567890', $outbox->getTo());
         $this->assertSame(Carbon::now('Asia/Jakarta')->toDateTimeString(), $outbox->getDate()->format(Carbon::DEFAULT_TO_STRING_FORMAT));
@@ -142,7 +142,7 @@ final class ClientTest extends TestCase
 
         $firstInbox = $inbox[0];
         $this->assertInstanceOf(Inbox::class, $firstInbox);
-        $this->assertSame(424, $firstInbox->getId());
+        $this->assertEquals(424, $firstInbox->getId());
         $this->assertSame('2017-11-03 09:04:59', $firstInbox->getDate()->format(Carbon::DEFAULT_TO_STRING_FORMAT));
         $this->assertSame('+628123456789', $firstInbox->getFrom());
         $this->assertSame('Hi John', $firstInbox->getMessage());
@@ -180,7 +180,7 @@ final class ClientTest extends TestCase
 
         $firstOutbox = $outbox[0];
         $this->assertInstanceOf(Outbox::class, $firstOutbox);
-        $this->assertSame(424, $firstOutbox->getId());
+        $this->assertEquals(424, $firstOutbox->getId());
         $this->assertSame('Hi John', $firstOutbox->getMessage());
         $this->assertSame('+628123456789', $firstOutbox->getTo());
         $this->assertSame('2017-11-03 09:04:59', $firstOutbox->getDate()->format(Carbon::DEFAULT_TO_STRING_FORMAT));

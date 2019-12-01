@@ -12,7 +12,7 @@ use Ziswapp\Zenziva\ResponseFactoryInterface;
 final class Outbox implements ResponseFactoryInterface
 {
     /**
-     * @var int
+     * @var string
      */
     private $id;
 
@@ -37,13 +37,13 @@ final class Outbox implements ResponseFactoryInterface
     private $status;
 
     /**
-     * @param int               $id
+     * @param string            $id
      * @param string            $to
      * @param DateTimeInterface $date
      * @param string            $message
      * @param string            $status
      */
-    public function __construct(int $id, string $to, DateTimeInterface $date, string $message, string $status)
+    public function __construct(string $id, string $to, DateTimeInterface $date, string $message, string $status)
     {
         $this->id = $id;
         $this->to = $to;
@@ -61,7 +61,7 @@ final class Outbox implements ResponseFactoryInterface
      */
     public static function buildFromArrayContent(array $content): ResponseFactoryInterface
     {
-        $id = (int) $content['messageId'];
+        $id = $content['messageId'];
 
         /** @var DateTimeInterface $expiredDate */
         $date = Carbon::now('Asia/Jakarta');
@@ -81,9 +81,9 @@ final class Outbox implements ResponseFactoryInterface
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getId(): int
+    public function getId(): string
     {
         return $this->id;
     }
