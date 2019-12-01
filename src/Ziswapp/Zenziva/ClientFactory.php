@@ -58,13 +58,12 @@ final class ClientFactory
      * @param HttpClientInterface $httpClient
      * @param string              $key
      * @param string              $secret
-     * @param bool                $isOtp
      *
      * @return MaskingClientInterface
      */
-    public static function masking(HttpClientInterface $httpClient, string $key, string $secret, bool $isOtp = false): MaskingClientInterface
+    public static function masking(HttpClientInterface $httpClient, string $key, string $secret): MaskingClientInterface
     {
-        return new Masking(new Credential('https://alpha.zenziva.net/apps/', $key, $secret), $httpClient, $isOtp);
+        return new Masking(new Credential('https://alpha.zenziva.net/apps/', $key, $secret), $httpClient);
     }
 
     /**
@@ -76,7 +75,12 @@ final class ClientFactory
      */
     public static function otp(HttpClientInterface $httpClient, string $key, string $secret): MaskingClientInterface
     {
-        return new Masking(new Credential('https://alpha.zenziva.net/apps/', $key, $secret), $httpClient, true);
+        /** @var Masking $client */
+        $client = static::masking($httpClient, $key, $secret);
+
+        $client->setIsOtp(true);
+
+        return $client;
     }
 
     /**

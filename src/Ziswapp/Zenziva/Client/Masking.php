@@ -2,11 +2,9 @@
 
 namespace Ziswapp\Zenziva\Client;
 
-use Ziswapp\Zenziva\Credential;
 use Ziswapp\Zenziva\Response\Credit;
 use Ziswapp\Zenziva\Response\Outbox;
 use Ziswapp\Zenziva\Exception\CreditLimitException;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Ziswapp\Zenziva\Exception\ZenzivaRequestException;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
@@ -22,18 +20,22 @@ final class Masking extends Client implements MaskingClientInterface
     /**
      * @var bool
      */
-    private $isOtp;
+    private $isOtp = false;
 
     /**
-     * @param Credential          $credential
-     * @param HttpClientInterface $httpClient
-     * @param bool                $isOtp
+     * @param bool $isOtp
      */
-    public function __construct(Credential $credential, HttpClientInterface $httpClient, bool $isOtp = false)
+    public function setIsOtp(bool $isOtp): void
     {
-        parent::__construct($credential, $httpClient);
-
         $this->isOtp = $isOtp;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOtp(): bool
+    {
+        return $this->isOtp;
     }
 
     /**
@@ -61,7 +63,7 @@ final class Masking extends Client implements MaskingClientInterface
             'res' => 'json',
         ];
 
-        $body = $this->isOtp ?
+        $body = $this->isOtp() ?
             \array_merge($defaultBody, ['type' => 'otp', 'nohp' => $to, 'pesan' => $message]) :
             \array_merge($defaultBody, ['nohp' => $to, 'pesan' => $message]);
 
