@@ -6,7 +6,7 @@
 
 # ZenzivaClientApi
 
-Ini adalah client api untuk zenziva sms gateway, sementara ini hanya support untuk SMS Center saja.
+Ini adalah client api untuk zenziva sms gateway.
 
 # Install
 
@@ -20,38 +20,44 @@ composer require ziswapp/zenziva-client-api
 
 <?php
 
-use Carbon\Carbon;
-use Ziswapp\Zenziva\Credential;
-use Ziswapp\Zenziva\Response\Credit;
-use Ziswapp\Zenziva\Client\SmsCenter;
-
-require_once __DIR__ . '/vendor/autoload.php';
+use Ziswapp\Zenziva\ClientFactory;
+use Symfony\Component\HttpClient\HttpClient;
 
 $url = '';
 $key = '';
 $secret = '';
 
-$credential = new Credential($url, $key, $secret);
+$httpClient = HttpClient::create();
 
-$client = new SmsCenter($credential, Symfony\Component\HttpClient\HttpClient::create());
+// Crete client
+$regular = ClientFactory::regular($httpClient, $key, $secret); // Regular client
+$masking = ClientFactory::masking($httpClient, $key, $secret); // Masking client
+$otp = ClientFactory::otp($httpClient, $key, $secret); // Masking with otp client
+$smsCenter = ClientFactory::center($httpClient, $key, $secret, $url); // SMS Center client
 
-// Check credit balance, will be return Ziswapp\Zenziva\Response\Credit
-$credit = $client->balance();
+// Alternative
+$regular = ClientFactory::make($httpClient, ClientFactory::TYPE_REGULAR, $key, $secret); // Regular client
+$masking = ClientFactory::make($httpClient, ClientFactory::TYPE_MASKING, $key, $secret); // Masking client
+$otp = ClientFactory::make($httpClient, ClientFactory::TYPE_MASKING_OTP, $key, $secret); // Masking with otp client
+$smsCenter = ClientFactory::make($httpClient, ClientFactory::TYPE_SMS_CENTER, $key, $secret, $url); // SMS Center client
 
-$now = Carbon::now();
+// Zenziva Regular Operation
+$httpClient = HttpClient::create();
+$regular = ClientFactory::make($httpClient, ClientFactory::TYPE_REGULAR, $key, $secret); // Regular client
+$regular->send('081318788271', 'Sending notification.'); // Return array
 
-$startDate = $now->clone()->subDay();
-$endDate = $now->clone()->addDay();
+// Zenziva Masking Operation
+$httpClient = HttpClient::create();
+$masking = ClientFactory::make($httpClient, ClientFactory::TYPE_MASKING, $key, $secret); // Masking client
+$masking->balance(); // Check balance return Credit object
+$masking->send('081318788271', 'Sending notification.'); // Return Outbox object
+$masking->setIsOtp(true); // Change to masking otp client
 
-// Get list of inbox by date, will be return array Ziswapp\Zenziva\Response\Inbox
-$client->inbox($startDate, $endDate);
-
-// Get list of outbox by date, will be return array Ziswapp\Zenziva\Response\Outbox
-$client->outbox($startDate, $endDate);
-
-// Send sms message, will be return Ziswapp\Zenziva\Response\Outbox
-$client->send('081318788271', 'Testing SMS');
-
-// Check status pengiriman sms, wil be return Ziswapp\Zenziva\Response\Outbox
-$client->status('messageId');
+// Zenziva SMS Center Operation
+$smsCenter = ClientFactory::make($httpClient, ClientFactory::TYPE_SMS_CENTER, $key, $secret, $url); // SMS Center client
+$smsCenter->balance(); // Check balance return Credit object, will be throw CreditExpiredException or CreditLimitException if balance is 0 and expired date < now
+$smsCenter->send('081318788271', 'Sending notification.'); // Return Outbox object
+$smsCenter->outbox(new DateTime(), new DateTime()); // Get outbox by date, return array Outbox object
+$smsCenter->inbox(new DateTime(), new DateTime()); // Get inbox by date, return array Inbox object
+$smsCenter->status('messageId'); // Get status sms by messageId, return Outbox object
 ```
