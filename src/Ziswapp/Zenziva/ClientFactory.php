@@ -92,7 +92,7 @@ final class ClientFactory
      */
     public static function regular(HttpClientInterface $httpClient, string $key, string $secret): ClientInterface
     {
-        return new Regular(new Credential('https://reguler.zenziva.net/apps/', $key, $secret), $httpClient);
+        return new Regular(new Credential('https://gsm.zenziva.net/api', $key, $secret), $httpClient);
     }
 
     /**

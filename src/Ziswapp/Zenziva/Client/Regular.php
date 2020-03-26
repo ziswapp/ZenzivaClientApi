@@ -30,7 +30,7 @@ final class Regular extends Client implements ClientInterface
      */
     public function send(string $to, string $message)
     {
-        $url = \sprintf('%s/apps/smsapi.php', $this->credential->getUrl());
+        $url = \sprintf('%s/api/sendsms', $this->credential->getUrl());
 
         $response = $this->httpClient->request('POST', $url, [
             'body' => [
@@ -64,7 +64,7 @@ final class Regular extends Client implements ClientInterface
 
             $content = $response->toArray();
 
-            if ($content['status'] === 0) {
+            if ((int) $content['status'] === 1) {
                 return $response->toArray();
             }
 
