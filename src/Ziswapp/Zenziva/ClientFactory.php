@@ -63,7 +63,7 @@ final class ClientFactory
      */
     public static function masking(HttpClientInterface $httpClient, string $key, string $secret): MaskingClientInterface
     {
-        return new Masking(new Credential('https://alpha.zenziva.net/apps/', $key, $secret), $httpClient);
+        return new Masking(new Credential('https://alpha.zenziva.net/apps', $key, $secret), $httpClient);
     }
 
     /**
