@@ -55,21 +55,19 @@ final class Masking extends Client implements MaskingClientInterface
     {
         $this->balance();
 
-        $url = \sprintf('%s/apps/smsapi.php', $this->credential->getUrl());
-
         $defaultBody = [
             'userkey' => $this->credential->getKey(),
             'passkey' => $this->credential->getSecret(),
             'res' => 'json',
         ];
 
-        $body = $this->isOtp() ?
+        $json = $this->isOtp() ?
             \array_merge($defaultBody, ['type' => 'otp', 'nohp' => $to, 'pesan' => $message]) :
             \array_merge($defaultBody, ['nohp' => $to, 'pesan' => $message]);
 
-        $response = $this->httpClient->request('POST', $url, [
-            \compact('body'),
-        ]);
+        $url = \sprintf('%s/apps/smsapi.php?%s', $this->credential->getUrl(), http_build_query($json));
+
+        $response = $this->httpClient->request('GET', $url);
 
         $content = $this->parseResponse($response);
 
@@ -97,13 +95,11 @@ final class Masking extends Client implements MaskingClientInterface
      */
     public function balance()
     {
-        $url = \sprintf('%s/apps/getbalance.php', $this->credential->getUrl());
+        $query = http_build_query(['userkey' => $this->credential->getKey(), 'passkey' => $this->credential->getSecret()]);
 
-        $defaultBody = ['userkey' => $this->credential->getKey(), 'passkey' => $this->credential->getSecret()];
+        $url = \sprintf('%s/apps/getbalance.php?%s', $this->credential->getUrl(), $query);
 
-        $response = $this->httpClient->request('GET', $url, [
-            'body' => $defaultBody,
-        ]);
+        $response = $this->httpClient->request('GET', $url);
 
         $content = $this->parseResponse($response);
 
