@@ -5,6 +5,7 @@ namespace Ziswapp\Zenziva;
 use RuntimeException;
 use Ziswapp\Zenziva\Client\Masking;
 use Ziswapp\Zenziva\Client\Regular;
+use Ziswapp\Zenziva\Client\ArraySms;
 use Ziswapp\Zenziva\Client\SmsCenter;
 use Ziswapp\Zenziva\Client\ClientInterface;
 use Ziswapp\Zenziva\Client\MaskingClientInterface;
@@ -106,5 +107,10 @@ final class ClientFactory
     public static function center(HttpClientInterface $httpClient, string $url, string $key, string $secret): SmsCenterClientInterface
     {
         return new SmsCenter(new Credential($url, $key, $secret), $httpClient);
+    }
+
+    public static function array(): ClientInterface
+    {
+        return new ArraySms();
     }
 }

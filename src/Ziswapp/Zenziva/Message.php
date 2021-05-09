@@ -39,4 +39,12 @@ final class Message
     {
         return $this->text;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'to' => $this->to,
+            'text' => $this->text,
+        ];
+    }
 }

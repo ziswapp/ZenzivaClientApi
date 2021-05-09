@@ -14,9 +14,12 @@
         }
     ],
     "require": {
-        "php": "^7.2|^7.4",
+        "php": "^7.4",
         "ext-json": "*",
         "ext-simplexml": "*",
+        "illuminate/notifications": "^7.30|^8.40",
+        "illuminate/support": "^7.30|^8.40",
+        "illuminate/events": "^7.30|^8.40",
         "nesbot/carbon": "^2.27",
         "symfony/http-client": "^4.4|^5.0"
     },
