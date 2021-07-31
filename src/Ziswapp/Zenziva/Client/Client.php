@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ziswapp\Zenziva\Client;
 
@@ -23,10 +25,6 @@ abstract class Client
      */
     protected $credential;
 
-    /**
-     * @param Credential          $credential
-     * @param HttpClientInterface $httpClient
-     */
     public function __construct(Credential $credential, HttpClientInterface $httpClient)
     {
         $this->httpClient = $httpClient;

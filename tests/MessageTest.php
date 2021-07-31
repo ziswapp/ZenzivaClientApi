@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests;
 
@@ -7,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 final class MessageTest extends TestCase
 {
-    public function testCanMakeClient()
+    public function testCanMakeClient(): void
     {
         $to = '081318788271';
         $text = 'Test message';

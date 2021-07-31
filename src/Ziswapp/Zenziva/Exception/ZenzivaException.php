@@ -8,5 +8,4 @@ use Exception;
 
 abstract class ZenzivaException extends Exception
 {
-
 }

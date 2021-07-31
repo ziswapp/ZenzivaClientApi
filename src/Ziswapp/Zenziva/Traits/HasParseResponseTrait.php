@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ziswapp\Zenziva\Traits;
 
@@ -17,9 +19,6 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 trait HasParseResponseTrait
 {
     /**
-     * @param ResponseInterface $response
-     *
-     * @return array
      * @throws ClientExceptionInterface
      * @throws DecodingExceptionInterface
      * @throws RedirectionExceptionInterface

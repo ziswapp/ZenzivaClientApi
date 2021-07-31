@@ -10,7 +10,6 @@ interface ZenzivaAwareNotificationInterface
 {
     /**
      * @param mixed $notifiable
-     * @return Message
      */
     public function toZenziva($notifiable): Message;
 }

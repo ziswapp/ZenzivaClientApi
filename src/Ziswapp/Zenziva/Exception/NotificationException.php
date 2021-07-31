@@ -6,5 +6,4 @@ namespace Ziswapp\Zenziva\Exception;
 
 final class NotificationException extends ZenzivaException
 {
-
 }

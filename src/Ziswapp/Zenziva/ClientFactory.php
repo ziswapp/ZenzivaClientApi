@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ziswapp\Zenziva;
 
@@ -27,12 +29,6 @@ final class ClientFactory
     public const TYPE_SMS_CENTER = 3;
 
     /**
-     * @param HttpClientInterface $httpClient
-     * @param int                 $type
-     * @param string              $key
-     * @param string              $secret
-     * @param string|null         $url
-     *
      * @return ClientInterface|MaskingClientInterface|SmsCenterClientInterface
      */
     public static function make(HttpClientInterface $httpClient, int $type, string $key, string $secret, ?string $url = null)
@@ -51,29 +47,15 @@ final class ClientFactory
 
                 return self::center($httpClient, $url, $key, $secret);
             default:
-                throw new TypeNotSupportedException(\sprintf('This client type `%i` is not supported.', $type));
+                throw new TypeNotSupportedException(\sprintf('This client type `%s` is not supported.', $type));
         }
     }
 
-    /**
-     * @param HttpClientInterface $httpClient
-     * @param string              $key
-     * @param string              $secret
-     *
-     * @return MaskingClientInterface
-     */
     public static function masking(HttpClientInterface $httpClient, string $key, string $secret): MaskingClientInterface
     {
         return new Masking(new Credential('https://alpha.zenziva.net', $key, $secret), $httpClient);
     }
 
-    /**
-     * @param HttpClientInterface $httpClient
-     * @param string              $key
-     * @param string              $secret
-     *
-     * @return MaskingClientInterface
-     */
     public static function otp(HttpClientInterface $httpClient, string $key, string $secret): MaskingClientInterface
     {
         /** @var Masking $client */
@@ -84,26 +66,11 @@ final class ClientFactory
         return $client;
     }
 
-    /**
-     * @param HttpClientInterface $httpClient
-     * @param string              $key
-     * @param string              $secret
-     *
-     * @return ClientInterface
-     */
     public static function regular(HttpClientInterface $httpClient, string $key, string $secret): ClientInterface
     {
         return new Regular(new Credential('https://gsm.zenziva.net', $key, $secret), $httpClient);
     }
 
-    /**
-     * @param HttpClientInterface $httpClient
-     * @param string              $url
-     * @param string              $key
-     * @param string              $secret
-     *
-     * @return SmsCenterClientInterface
-     */
     public static function center(HttpClientInterface $httpClient, string $url, string $key, string $secret): SmsCenterClientInterface
     {
         return new SmsCenter(new Credential($url, $key, $secret), $httpClient);

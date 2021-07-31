@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ziswapp\Zenziva\Client;
 
@@ -8,9 +10,6 @@ namespace Ziswapp\Zenziva\Client;
 interface ClientInterface
 {
     /**
-     * @param string $to
-     * @param string $message
-     *
      * @return mixed
      */
     public function send(string $to, string $message);

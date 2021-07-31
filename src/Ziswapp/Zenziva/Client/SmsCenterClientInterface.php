@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ziswapp\Zenziva\Client;
 
@@ -10,8 +12,6 @@ use DateTimeInterface;
 interface SmsCenterClientInterface extends ClientInterface
 {
     /**
-     * @param string $messageId
-     *
      * @return mixed
      */
     public function status(string $messageId);
@@ -22,17 +22,11 @@ interface SmsCenterClientInterface extends ClientInterface
     public function balance();
 
     /**
-     * @param DateTimeInterface $startDate
-     * @param DateTimeInterface $endDate
-     *
      * @return mixed
      */
     public function inbox(DateTimeInterface $startDate, DateTimeInterface $endDate);
 
     /**
-     * @param DateTimeInterface $startDate
-     * @param DateTimeInterface $endDate
-     *
      * @return mixed
      */
     public function outbox(DateTimeInterface $startDate, DateTimeInterface $endDate);

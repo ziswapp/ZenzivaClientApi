@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Client;
 
@@ -21,7 +23,7 @@ use Symfony\Component\HttpClient\Response\MockResponse;
  */
 final class SmsCenterTest extends TestCase
 {
-    public function testThrowCredentialException()
+    public function testThrowCredentialException(): void
     {
         $this->expectException(ZenzivaRequestException::class);
         $this->expectExceptionMessage('Userkey atau Passkey Salah');
@@ -39,7 +41,7 @@ final class SmsCenterTest extends TestCase
         $client->balance();
     }
 
-    public function testCanSendingSms()
+    public function testCanSendingSms(): void
     {
         $responses = [
             new MockResponse(\file_get_contents(__DIR__ . '/stubs/success-balance.json')),
@@ -61,7 +63,7 @@ final class SmsCenterTest extends TestCase
         $this->assertSame('Sent', $outbox->getStatus());
     }
 
-    public function testCanCheckStatusSms()
+    public function testCanCheckStatusSms(): void
     {
         $responses = [
             new MockResponse(\file_get_contents(__DIR__ . '/stubs/success-status.json')),
@@ -80,7 +82,7 @@ final class SmsCenterTest extends TestCase
         $this->assertSame('Sent', $outbox->getStatus());
     }
 
-    public function testCanRequestBalanceEndPoint()
+    public function testCanRequestBalanceEndPoint(): void
     {
         $responses = [
             new MockResponse(\file_get_contents(__DIR__ . '/stubs/success-balance.json')),
@@ -94,10 +96,10 @@ final class SmsCenterTest extends TestCase
 
         $this->assertInstanceOf(Credit::class, $credit);
         $this->assertSame(999999, $credit->getBalance());
-        $this->assertSame('31 December 2020', $credit->getExpired()->format('d F Y'));
+        $this->assertSame('31 December 9999', $credit->getExpired()->format('d F Y'));
     }
 
-    public function testCanRequestWithZeroBalance()
+    public function testCanRequestWithZeroBalance(): void
     {
         $this->expectException(CreditLimitException::class);
 
@@ -110,7 +112,7 @@ final class SmsCenterTest extends TestCase
         $client->balance();
     }
 
-    public function testCanRequestWithExpiredBalance()
+    public function testCanRequestWithExpiredBalance(): void
     {
         $this->expectException(CreditExpiredException::class);
 
@@ -125,7 +127,7 @@ final class SmsCenterTest extends TestCase
         $client->balance();
     }
 
-    public function testCanGetListSmsInbox()
+    public function testCanGetListSmsInbox(): void
     {
         $responses = [
             new MockResponse(\file_get_contents(__DIR__ . '/stubs/success-inbox.json')),
@@ -148,7 +150,7 @@ final class SmsCenterTest extends TestCase
         $this->assertSame('Hi John', $firstInbox->getMessage());
     }
 
-    public function testCanGetEmptySmsInbox()
+    public function testCanGetEmptySmsInbox(): void
     {
         $responses = [
             new MockResponse(\file_get_contents(__DIR__ . '/stubs/empty-inbox.json')),
@@ -163,7 +165,7 @@ final class SmsCenterTest extends TestCase
         $this->assertCount(0, $inbox);
     }
 
-    public function testCanGetListSmsOutbox()
+    public function testCanGetListSmsOutbox(): void
     {
         $responses = [
             new MockResponse(\file_get_contents(__DIR__ . '/stubs/success-outbox.json')),
@@ -187,7 +189,7 @@ final class SmsCenterTest extends TestCase
         $this->assertSame('Sent', $firstOutbox->getStatus());
     }
 
-    public function testCanGetEmptySmsOutbox()
+    public function testCanGetEmptySmsOutbox(): void
     {
         $responses = [
             new MockResponse(\file_get_contents(__DIR__ . '/stubs/empty-outbox.json')),
@@ -203,9 +205,6 @@ final class SmsCenterTest extends TestCase
         $this->assertCount(0, $outbox);
     }
 
-    /**
-     * @return Credential
-     */
     protected function credential(): Credential
     {
         return new Credential('http://foobar.zenziva.co.id/', 'user', 'secret');

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ziswapp\Zenziva\Response;
 
@@ -36,13 +38,6 @@ final class Outbox implements ResponseFactoryInterface
      */
     private $status;
 
-    /**
-     * @param string            $id
-     * @param string            $to
-     * @param DateTimeInterface $date
-     * @param string            $message
-     * @param string            $status
-     */
     public function __construct(string $id, string $to, DateTimeInterface $date, string $message, string $status)
     {
         $this->id = $id;
@@ -53,8 +48,6 @@ final class Outbox implements ResponseFactoryInterface
     }
 
     /**
-     * @param array $content
-     *
      * @return ResponseFactoryInterface|self
      *
      * @psalm-suppress PossiblyFalseArgument
@@ -80,41 +73,26 @@ final class Outbox implements ResponseFactoryInterface
         return new static($id, $to, $date, $message, $status);
     }
 
-    /**
-     * @return string
-     */
     public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getTo(): string
     {
         return $this->to;
     }
 
-    /**
-     * @return DateTimeInterface
-     */
     public function getDate(): DateTimeInterface
     {
         return $this->date;
     }
 
-    /**
-     * @return string
-     */
     public function getMessage(): string
     {
         return $this->message;
     }
 
-    /**
-     * @return string
-     */
     public function getStatus(): string
     {
         return $this->status;

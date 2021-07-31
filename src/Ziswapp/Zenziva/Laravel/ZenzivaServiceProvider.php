@@ -7,20 +7,20 @@ namespace Ziswapp\Zenziva\Laravel;
 use Ziswapp\Zenziva\ClientFactory;
 use Illuminate\Container\Container;
 use Illuminate\Support\ServiceProvider;
-use Ziswapp\Zenziva\Client\ClientInterface;
 use Illuminate\Contracts\Config\Repository;
+use Ziswapp\Zenziva\Client\ClientInterface;
 use Symfony\Component\HttpClient\HttpClient;
 
 final class ZenzivaServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $this->app->bind(ClientInterface::class, function (Container $app): ClientInterface {
             $config = $app->make(Repository::class);
 
-            $key = (string)$config->get('services.zenziva.key');
-            $secret = (string)$config->get('services.zenziva.secret');
-            $type = (string)$config->get('services.zenziva.type');
+            $key = (string) $config->get('services.zenziva.key');
+            $secret = (string) $config->get('services.zenziva.secret');
+            $type = (string) $config->get('services.zenziva.type');
 
             $httpClient = HttpClient::create();
 

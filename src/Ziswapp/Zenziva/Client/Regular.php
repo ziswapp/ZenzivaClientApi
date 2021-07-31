@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ziswapp\Zenziva\Client;
 
@@ -17,9 +19,6 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 final class Regular extends Client implements ClientInterface
 {
     /**
-     * @param string $to
-     * @param string $message
-     *
      * @return array
      * @throws ClientExceptionInterface
      * @throws DecodingExceptionInterface
@@ -45,9 +44,6 @@ final class Regular extends Client implements ClientInterface
     }
 
     /**
-     * @param ResponseInterface $response
-     *
-     * @return array
      * @throws ClientExceptionInterface
      * @throws DecodingExceptionInterface
      * @throws RedirectionExceptionInterface
@@ -81,8 +77,6 @@ final class Regular extends Client implements ClientInterface
     }
 
     /**
-     * @param ResponseInterface $response
-     *
      * @return array
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
@@ -105,11 +99,6 @@ final class Regular extends Client implements ClientInterface
         throw new ZenzivaRequestException($content->message->text);
     }
 
-    /**
-     * @param string $content
-     *
-     * @return bool
-     */
     protected function isXml(string $content): bool
     {
         return \mb_substr($content, 0, 10) === '<response>';

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Response;
 
@@ -11,9 +13,12 @@ use Ziswapp\Zenziva\Response\Credit;
  */
 final class CreditTest extends TestCase
 {
-    public function testCanCreateFromFactory()
+    public function testCanCreateFromFactory(): void
     {
-        $content = ['credit' => 100, 'expired' => '31 Desember 2020'];
+        $content = [
+            'credit' => 100,
+            'expired' => '31 Desember 2020',
+        ];
 
         $credit = Credit::buildFromArrayContent($content);
 
@@ -22,9 +27,12 @@ final class CreditTest extends TestCase
         $this->assertSame('31 December 2020', $credit->getExpired()->format('d F Y'));
     }
 
-    public function testCanCreateFromConstruct()
+    public function testCanCreateFromConstruct(): void
     {
-        $content = ['credit' => 100, 'expired' => '31 Desember 2020'];
+        $content = [
+            'credit' => 100,
+            'expired' => '31 Desember 2020',
+        ];
 
         $expired = Carbon::createFromLocaleFormat('d F Y', 'id_ID', $content['expired']);
 

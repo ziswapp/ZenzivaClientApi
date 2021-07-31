@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ziswapp\Zenziva;
 
@@ -22,11 +24,6 @@ final class Credential
      */
     private $url;
 
-    /**
-     * @param string $url
-     * @param string $key
-     * @param string $secret
-     */
     public function __construct(string $url, string $key, string $secret)
     {
         $this->key = $key;
@@ -34,25 +31,16 @@ final class Credential
         $this->url = $url;
     }
 
-    /**
-     * @return string
-     */
     public function getKey(): string
     {
         return $this->key;
     }
 
-    /**
-     * @return string
-     */
     public function getSecret(): string
     {
         return $this->secret;
     }
 
-    /**
-     * @return string
-     */
     public function getUrl(): string
     {
         return $this->url;

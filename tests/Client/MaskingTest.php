@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Client;
 
@@ -17,17 +19,20 @@ use Symfony\Component\HttpClient\Response\MockResponse;
  */
 final class MaskingTest extends TestCase
 {
-    public function testCanThrowExceptionWithHttpCodeError()
+    public function testCanThrowExceptionWithHttpCodeError(): void
     {
         $this->expectException(ZenzivaRequestException::class);
         $this->expectExceptionMessage('Wrong Userkey or Passkey');
 
-        $responses = [new MockResponse(\file_get_contents(__DIR__ . '/stubs/error-masking-balance.json'), ['http_code' => 400])];
+        $responses = [
+            new MockResponse(\file_get_contents(__DIR__ . '/stubs/error-masking-balance.json'), [
+                'http_code' => 400,
+            ]), ];
         $client = ClientFactory::masking(new MockHttpClient($responses), 'key', 'secret');
         $client->balance();
     }
 
-    public function testCanThrowException()
+    public function testCanThrowException(): void
     {
         $this->expectException(ZenzivaRequestException::class);
         $this->expectExceptionMessage('Wrong Userkey or Passkey');
@@ -37,20 +42,20 @@ final class MaskingTest extends TestCase
         $client->balance();
     }
 
-    public function testCanThrowExceptionWhenSendingSms()
+    public function testCanThrowExceptionWhenSendingSms(): void
     {
         $this->expectException(ZenzivaRequestException::class);
         $this->expectExceptionMessage('Userkey / Passkey Salah');
 
         $responses = [
             new MockResponse(\file_get_contents(__DIR__ . '/stubs/success-masking-balance.json')),
-            new MockResponse(\file_get_contents(__DIR__ . '/stubs/error-masking.json'))
+            new MockResponse(\file_get_contents(__DIR__ . '/stubs/error-masking.json')),
         ];
         $client = ClientFactory::masking(new MockHttpClient($responses), 'key', 'secret');
         $client->send('081318788271', 'Test Pesan');
     }
 
-    public function testThrowExceptionGetBalanceCredit()
+    public function testThrowExceptionGetBalanceCredit(): void
     {
         $this->expectException(CreditLimitException::class);
 
@@ -59,7 +64,7 @@ final class MaskingTest extends TestCase
         $client->balance();
     }
 
-    public function testCanGetBalanceCredit()
+    public function testCanGetBalanceCredit(): void
     {
         $responses = [new MockResponse(\file_get_contents(__DIR__ . '/stubs/success-masking-balance.json'))];
         $client = ClientFactory::masking(new MockHttpClient($responses), 'key', 'secret');
@@ -70,11 +75,11 @@ final class MaskingTest extends TestCase
         $this->assertNull($credit->getExpired());
     }
 
-    public function testCanSendRegularSmsMasking()
+    public function testCanSendRegularSmsMasking(): void
     {
         $responses = [
             new MockResponse(\file_get_contents(__DIR__ . '/stubs/success-masking-balance.json')),
-            new MockResponse(\file_get_contents(__DIR__ . '/stubs/success-masking.json'))
+            new MockResponse(\file_get_contents(__DIR__ . '/stubs/success-masking.json')),
         ];
 
         $client = ClientFactory::masking(new MockHttpClient($responses), 'key', 'secret');
@@ -88,11 +93,11 @@ final class MaskingTest extends TestCase
         $this->assertSame('Success', $outbox->getStatus());
     }
 
-    public function testCanSendOtpSmsMasking()
+    public function testCanSendOtpSmsMasking(): void
     {
         $responses = [
             new MockResponse(\file_get_contents(__DIR__ . '/stubs/success-masking-balance.json')),
-            new MockResponse(\file_get_contents(__DIR__ . '/stubs/success-masking.json'))
+            new MockResponse(\file_get_contents(__DIR__ . '/stubs/success-masking.json')),
         ];
 
         $client = ClientFactory::otp(new MockHttpClient($responses), 'key', 'secret');

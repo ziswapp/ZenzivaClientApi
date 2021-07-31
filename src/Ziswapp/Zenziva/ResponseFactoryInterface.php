@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ziswapp\Zenziva;
 
@@ -8,8 +10,6 @@ namespace Ziswapp\Zenziva;
 interface ResponseFactoryInterface
 {
     /**
-     * @param array $content
-     *
      * @return ResponseFactoryInterface|self
      */
     public static function buildFromArrayContent(array $content): self;

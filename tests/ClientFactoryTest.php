@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests;
 
@@ -19,7 +21,7 @@ use Ziswapp\Zenziva\Exception\TypeNotSupportedException;
  */
 final class ClientFactoryTest extends TestCase
 {
-    public function testCanMakeClient()
+    public function testCanMakeClient(): void
     {
         $http = HttpClient::create();
 
@@ -40,8 +42,7 @@ final class ClientFactoryTest extends TestCase
         $this->assertInstanceOf(SmsCenter::class, $client);
     }
 
-
-    public function testCanMakeClientUsingMakeFunction()
+    public function testCanMakeClientUsingMakeFunction(): void
     {
         $http = HttpClient::create();
 
@@ -62,7 +63,7 @@ final class ClientFactoryTest extends TestCase
         $this->assertInstanceOf(SmsCenter::class, $client);
     }
 
-    public function testThrowExceptionWhenCreateSmsCenterClientWithUrlNotProvide()
+    public function testThrowExceptionWhenCreateSmsCenterClientWithUrlNotProvide(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('For sms center client, url must be provide.');
@@ -74,10 +75,10 @@ final class ClientFactoryTest extends TestCase
         $this->assertInstanceOf(SmsCenter::class, $client);
     }
 
-    public function testThrowExceptionWhenTypeNotSupported()
+    public function testThrowExceptionWhenTypeNotSupported(): void
     {
         $this->expectException(TypeNotSupportedException::class);
-        $this->expectExceptionMessage(\sprintf('This client type `%i` is not supported.', 10));
+        $this->expectExceptionMessage(\sprintf('This client type `%s` is not supported.', '10'));
 
         $http = HttpClient::create();
 

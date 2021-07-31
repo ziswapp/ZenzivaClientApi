@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ziswapp\Zenziva\Response;
 
@@ -21,10 +23,6 @@ final class Credit implements ResponseFactoryInterface
      */
     private $expired;
 
-    /**
-     * @param int                    $balance
-     * @param DateTimeInterface|null $expired
-     */
     public function __construct(int $balance, ?DateTimeInterface $expired = null)
     {
         $this->balance = $balance;
@@ -33,8 +31,6 @@ final class Credit implements ResponseFactoryInterface
     }
 
     /**
-     * @param array $content
-     *
      * @return ResponseFactoryInterface|self
      */
     public static function buildFromArrayContent(array $content): ResponseFactoryInterface
@@ -53,17 +49,11 @@ final class Credit implements ResponseFactoryInterface
         return new static($balance);
     }
 
-    /**
-     * @return int
-     */
     public function getBalance(): int
     {
         return $this->balance;
     }
 
-    /**
-     * @return DateTimeInterface|null
-     */
     public function getExpired(): ?DateTimeInterface
     {
         return $this->expired;

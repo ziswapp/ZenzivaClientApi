@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ziswapp\Zenziva\Response;
 
@@ -31,12 +33,6 @@ final class Inbox implements ResponseFactoryInterface
      */
     private $message;
 
-    /**
-     * @param int               $id
-     * @param string            $from
-     * @param DateTimeInterface $date
-     * @param string            $message
-     */
     public function __construct(int $id, string $from, DateTimeInterface $date, string $message)
     {
         $this->id = $id;
@@ -46,8 +42,6 @@ final class Inbox implements ResponseFactoryInterface
     }
 
     /**
-     * @param array $content
-     *
      * @return ResponseFactoryInterface|self
      *
      * @psalm-suppress PossiblyFalseArgument
@@ -64,33 +58,21 @@ final class Inbox implements ResponseFactoryInterface
         return new static($id, $from, $date, $message);
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getFrom(): string
     {
         return $this->from;
     }
 
-    /**
-     * @return DateTimeInterface
-     */
     public function getDate(): DateTimeInterface
     {
         return $this->date;
     }
 
-    /**
-     * @return string
-     */
     public function getMessage(): string
     {
         return $this->message;

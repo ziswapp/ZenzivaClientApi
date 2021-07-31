@@ -21,9 +21,6 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 final class SmsCenter extends Client implements SmsCenterClientInterface
 {
     /**
-     * @param string $to
-     * @param string $message
-     *
      * @return Outbox
      * @throws ClientExceptionInterface
      * @throws CreditExpiredException
@@ -55,8 +52,6 @@ final class SmsCenter extends Client implements SmsCenterClientInterface
     }
 
     /**
-     * @param string $messageId
-     *
      * @return Outbox
      * @throws ClientExceptionInterface
      * @throws DecodingExceptionInterface
@@ -115,9 +110,6 @@ final class SmsCenter extends Client implements SmsCenterClientInterface
     }
 
     /**
-     * @param DateTimeInterface $startDate
-     * @param DateTimeInterface $endDate
-     *
      * @return array
      * @throws ClientExceptionInterface
      * @throws DecodingExceptionInterface
@@ -149,9 +141,6 @@ final class SmsCenter extends Client implements SmsCenterClientInterface
     }
 
     /**
-     * @param DateTimeInterface $startDate
-     * @param DateTimeInterface $endDate
-     *
      * @return array
      * @throws ClientExceptionInterface
      * @throws DecodingExceptionInterface
@@ -182,11 +171,6 @@ final class SmsCenter extends Client implements SmsCenterClientInterface
         }, $content['msg']);
     }
 
-    /**
-     * @param string $endPoint
-     *
-     * @return string
-     */
     private function buildUrl(string $endPoint): string
     {
         return \sprintf(

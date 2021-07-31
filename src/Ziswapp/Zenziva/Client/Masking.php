@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Ziswapp\Zenziva\Client;
 
@@ -22,26 +24,17 @@ final class Masking extends Client implements MaskingClientInterface
      */
     private $isOtp = false;
 
-    /**
-     * @param bool $isOtp
-     */
     public function setIsOtp(bool $isOtp): void
     {
         $this->isOtp = $isOtp;
     }
 
-    /**
-     * @return bool
-     */
     public function isOtp(): bool
     {
         return $this->isOtp;
     }
 
     /**
-     * @param string $to
-     * @param string $message
-     *
      * @return Outbox
      * @throws ClientExceptionInterface
      * @throws CreditLimitException
@@ -62,8 +55,15 @@ final class Masking extends Client implements MaskingClientInterface
         ];
 
         $json = $this->isOtp() ?
-            \array_merge($defaultBody, ['type' => 'otp', 'nohp' => $to, 'pesan' => $message]) :
-            \array_merge($defaultBody, ['nohp' => $to, 'pesan' => $message]);
+            \array_merge($defaultBody, [
+                'type' => 'otp',
+                'nohp' => $to,
+                'pesan' => $message,
+            ]) :
+            \array_merge($defaultBody, [
+                'nohp' => $to,
+                'pesan' => $message,
+            ]);
 
         $url = \sprintf('%s/apps/smsapi.php?%s', $this->credential->getUrl(), http_build_query($json));
 
@@ -77,7 +77,11 @@ final class Masking extends Client implements MaskingClientInterface
 
         /** @var Outbox $outbox */
         $outbox = Outbox::buildFromArrayContent(
-            \array_merge($content, ['isiPesan' => $message, 'msg-status' => $content['text'], 'tujuan' => $content['to']])
+            \array_merge($content, [
+                'isiPesan' => $message,
+                'msg-status' => $content['text'],
+                'tujuan' => $content['to'],
+            ])
         );
 
         return $outbox;
@@ -95,7 +99,10 @@ final class Masking extends Client implements MaskingClientInterface
      */
     public function balance()
     {
-        $query = http_build_query(['userkey' => $this->credential->getKey(), 'passkey' => $this->credential->getSecret()]);
+        $query = http_build_query([
+            'userkey' => $this->credential->getKey(),
+            'passkey' => $this->credential->getSecret(),
+        ]);
 
         $url = \sprintf('%s/apps/getbalance.php?%s', $this->credential->getUrl(), $query);
 

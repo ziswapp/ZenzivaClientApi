@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Traits;
 
@@ -13,11 +15,14 @@ use Symfony\Component\HttpClient\Response\MockResponse;
  */
 final class HasParseResponseTraitTest extends TestCase
 {
-    public function testTraitCanThrowExceptionWithHttpCodeError()
+    public function testTraitCanThrowExceptionWithHttpCodeError(): void
     {
         $this->expectException(ZenzivaRequestException::class);
 
-        $responses = [new MockResponse(\file_get_contents(__DIR__ . '/stubs/error-masking.json'), ['http_code' => 400])];
+        $responses = [
+            new MockResponse(\file_get_contents(__DIR__ . '/stubs/error-masking.json'), [
+                'http_code' => 400,
+            ]), ];
         $client = ClientFactory::masking(new MockHttpClient($responses), 'key', 'secret');
         $client->balance();
     }
