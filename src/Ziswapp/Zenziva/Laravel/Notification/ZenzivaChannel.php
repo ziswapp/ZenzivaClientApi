@@ -38,7 +38,7 @@ final class ZenzivaChannel
         if (! $notification instanceof ZenzivaAwareNotificationInterface) {
             $errorMessage = 'Notification must be instanceof of ' . ZenzivaAwareNotificationInterface::class;
 
-            $this->event->dispatch(new NotificationWasFailed($errorMessage));
+            $this->event->dispatch(new NotificationWasFailed($errorMessage, $notifiable));
 
             throw new NotificationException($errorMessage);
         }
@@ -47,13 +47,13 @@ final class ZenzivaChannel
         $message = $notification->toZenziva($notifiable);
 
         try {
-            $this->event->dispatch(new NotificationWasSending($message));
+            $this->event->dispatch(new NotificationWasSending($message, $notifiable));
 
             $response = $this->client->send($message->getTo(), $message->getText());
 
-            $this->event->dispatch(new NotificationWasSend($message, $response));
+            $this->event->dispatch(new NotificationWasSend($message, $response, $notifiable));
         } catch (Exception $exception) {
-            $this->event->dispatch(new NotificationWasFailed($exception->getMessage(), $message));
+            $this->event->dispatch(new NotificationWasFailed($exception->getMessage(), $notifiable, $message));
 
             throw new NotificationException($exception->getMessage(), (int) $exception->getCode(), $exception);
         }
