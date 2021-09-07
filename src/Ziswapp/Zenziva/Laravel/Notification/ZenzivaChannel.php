@@ -10,6 +10,9 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Events\Dispatcher;
 use Ziswapp\Zenziva\Client\ClientInterface;
 use Ziswapp\Zenziva\Exception\NotificationException;
+use Ziswapp\Zenziva\Laravel\Events\NotificationWasSend;
+use Ziswapp\Zenziva\Laravel\Events\NotificationWasFailed;
+use Ziswapp\Zenziva\Laravel\Events\NotificationWasSending;
 use Ziswapp\Zenziva\Laravel\Concerns\ZenzivaAwareNotificationInterface;
 
 final class ZenzivaChannel
@@ -35,28 +38,22 @@ final class ZenzivaChannel
         if (! $notification instanceof ZenzivaAwareNotificationInterface) {
             $errorMessage = 'Notification must be instanceof of ' . ZenzivaAwareNotificationInterface::class;
 
-            $this->event->dispatch('zenziva.notification.failed', [
-                'message' => $errorMessage,
-            ]);
+            $this->event->dispatch(new NotificationWasFailed($errorMessage));
 
             throw new NotificationException($errorMessage);
         }
 
-        try {
-            /** @var Message $message */
-            $message = $notification->toZenziva($notifiable);
+        /** @var Message $message */
+        $message = $notification->toZenziva($notifiable);
 
-            $this->event->dispatch('zenziva.notification.sending', [
-                'data' => $message->toArray(),
-            ]);
+        try {
+            $this->event->dispatch(new NotificationWasSending($message));
 
             $response = $this->client->send($message->getTo(), $message->getText());
 
-            $this->event->dispatch('zenziva.notification.send', $response);
+            $this->event->dispatch(new NotificationWasSend($message, $response));
         } catch (Exception $exception) {
-            $this->event->dispatch('zenziva.notification.failed', [
-                'message' => $exception->getMessage(),
-            ]);
+            $this->event->dispatch(new NotificationWasFailed($exception->getMessage(), $message));
 
             throw new NotificationException($exception->getMessage(), (int) $exception->getCode(), $exception);
         }
