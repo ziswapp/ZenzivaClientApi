@@ -8,6 +8,8 @@
 
 Ini adalah client api untuk zenziva sms gateway.
 
+> Move package to [https://github.com/atfromhome/zenziva-client-api](https://github.com/atfromhome/zenziva-client-api)
+
 # Install
 
 ```
